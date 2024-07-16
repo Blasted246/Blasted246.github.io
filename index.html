@@ -50,4 +50,32 @@
                 videoElement.srcObject = stream;
             })
             .catch((error) => {
-                console.error("Error accessing media
+                console.error("Error accessing media devices.", error);
+            });
+    }
+
+    function startCamera() {
+        const videoSource = cameraSelect.value;
+        getStream(videoSource);
+    }
+
+    navigator.mediaDevices.enumerateDevices()
+        .then(gotDevices)
+        .catch(function(error) {
+            console.error("Error enumerating devices.", error);
+        });
+
+    startButton.addEventListener('click', startCamera);
+
+    // Automatically start the camera with the first available device on page load
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(function(stream) {
+            currentStream = stream;
+            videoElement.srcObject = stream;
+        })
+        .catch(function(error) {
+            console.error("Error accessing media devices.", error);
+        });
+</script>
+</body>
+</html>

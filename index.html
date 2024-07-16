@@ -1,15 +1,53 @@
 <!DOCTYPE html>
-<html></html>
+<html>
+<head>
+    <title>Select Camera</title>
+</head>
+<body>
 <div id="container">
-    <video autoplay="true" id="videoElement" controls height="540" width="960" muted>
-    </video>
+    <video autoplay="true" id="videoElement" controls height="540" width="960" muted></video>
+</div>
+<div>
+    <label for="cameraSelect">Select Camera:</label>
+    <select id="cameraSelect"></select>
+    <button id="startButton">Start Camera</button>
 </div>
 <script>
-    if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({video: true, audio: true})
-            .then(function (stream) {
-                document.querySelector("#videoElement").srcObject = stream;
-            });
+    const videoElement = document.querySelector("#videoElement");
+    const cameraSelect = document.querySelector("#cameraSelect");
+    const startButton = document.querySelector("#startButton");
+    let currentStream = null;
+
+    function stopMediaTracks(stream) {
+        stream.getTracks().forEach(track => {
+            track.stop();
+        });
     }
-</script>
-</html>
+
+    function gotDevices(deviceInfos) {
+        cameraSelect.innerHTML = '';
+        deviceInfos.forEach((deviceInfo) => {
+            if (deviceInfo.kind === 'videoinput') {
+                const option = document.createElement('option');
+                option.value = deviceInfo.deviceId;
+                option.text = deviceInfo.label || `Camera ${cameraSelect.length + 1}`;
+                cameraSelect.appendChild(option);
+            }
+        });
+    }
+
+    function getStream(deviceId) {
+        if (currentStream) {
+            stopMediaTracks(currentStream);
+        }
+        const constraints = {
+            video: { deviceId: deviceId ? { exact: deviceId } : undefined },
+            audio: true
+        };
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => {
+                currentStream = stream;
+                videoElement.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error("Error accessing media

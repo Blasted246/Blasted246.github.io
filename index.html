@@ -1,0 +1,12 @@
+<div id="container">
+    <video autoplay="true" id="videoElement" controls height="540" width="960">
+    </video>
+</div>
+<script>
+    if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({video: true, audio: true})
+            .then(function (stream) {
+                document.querySelector("#videoElement").srcObject = stream;
+            });
+    }
+</script>

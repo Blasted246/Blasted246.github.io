@@ -2,22 +2,42 @@
 <html>
 <head>
     <title>Select Camera</title>
+    <style>
+        #container {
+            position: relative;
+            display: inline-block;
+        }
+        .vertical-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background-color: red;
+            display: none; /* Initially hidden */
+        }
+    </style>
 </head>
 <body>
 <div id="container">
-    <video autoplay="true" id="videoElement" controls height="540" width="960" muted></video>
+    <video autoplay="true" id="videoElement" controls muted></video>
+    <div class="vertical-line" id="verticalLine"></div>
 </div>
 <div>
     <label for="cameraSelect">Select Camera:</label>
     <select id="cameraSelect"></select>
     <button id="startButton">Start Camera</button>
     <button id="saveButton">Save Last 30 Seconds</button>
+    <button id="toggleLineButton">Toggle Vertical Line</button>
 </div>
 <script>
     const videoElement = document.querySelector("#videoElement");
     const cameraSelect = document.querySelector("#cameraSelect");
     const startButton = document.querySelector("#startButton");
     const saveButton = document.querySelector("#saveButton");
+    const toggleLineButton = document.querySelector("#toggleLineButton");
+    const verticalLine = document.querySelector("#verticalLine");
     let currentStream = null;
     let mediaRecorder = null;
     let recordedChunks = [];
@@ -94,6 +114,14 @@
         a.click();
         window.URL.revokeObjectURL(url);
     }
+
+    toggleLineButton.addEventListener('click', function() {
+        if (verticalLine.style.display === 'none' || verticalLine.style.display === '') {
+            verticalLine.style.display = 'block';
+        } else {
+            verticalLine.style.display = 'none';
+        }
+    });
 
     navigator.mediaDevices.enumerateDevices()
         .then(gotDevices)

@@ -44,8 +44,7 @@
             overflow: hidden;
             background: var(--container-bg);
             width: 100%;
-            height: 80vh;
-            max-height: 80vh;
+            /* Height will be set dynamically with JavaScript */
             box-sizing: border-box;
             margin: 0 auto;
         }
@@ -90,8 +89,7 @@
                 padding: 10px;
             }
             #container {
-                height: 60vh;
-                max-height: 60vh;
+                /* Height handled via JavaScript */
             }
             .controls {
                 display: flex;
@@ -118,7 +116,7 @@
 </head>
 <body>
 <div id="container">
-    <video autoplay="true" id="videoElement" controls muted></video>
+    <video autoplay="true" id="videoElement" muted playsinline></video>
     <div class="vertical-line" id="verticalLine"></div>
 </div>
 <div class="controls">
@@ -137,10 +135,21 @@
     const toggleLineButton = document.querySelector("#toggleLineButton");
     const toggleDarkModeButton = document.querySelector("#toggleDarkModeButton");
     const verticalLine = document.querySelector("#verticalLine");
+    const container = document.querySelector("#container");
+    const controls = document.querySelector(".controls");
     let currentStream = null;
     let mediaRecorder = null;
     let recordedChunks = [];
     const maxRecordingTime = 30 * 1000; // 30 seconds in milliseconds
+
+    function resizeContainer() {
+        const paddingTop = parseInt(getComputedStyle(document.body).paddingTop);
+        const paddingBottom = parseInt(getComputedStyle(document.body).paddingBottom);
+        const available = window.innerHeight - controls.offsetHeight - paddingTop - paddingBottom;
+        container.style.height = available + 'px';
+    }
+
+    window.addEventListener('resize', resizeContainer);
 
     function stopMediaTracks(stream) {
         stream.getTracks().forEach(track => {
@@ -158,6 +167,7 @@
                 cameraSelect.appendChild(option);
             }
         });
+        resizeContainer();
     }
 
     function getStream(deviceId) {
@@ -234,6 +244,8 @@
 
     startButton.addEventListener('click', startCamera);
     saveButton.addEventListener('click', saveLast30Seconds);
+
+    resizeContainer();
 
     // Automatically start the camera with the first available device on page load
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })

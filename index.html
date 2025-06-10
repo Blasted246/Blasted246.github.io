@@ -14,6 +14,7 @@
             --button-bg: #fff;
             --button-text: #000;
             --button-border: #ccc;
+            --line-color: #888;
         }
 
         body {
@@ -32,6 +33,7 @@
             --button-bg: #333;
             --button-text: #eee;
             --button-border: #444;
+            --line-color: #555;
         }
 
         #container {
@@ -42,8 +44,8 @@
             overflow: hidden;
             background: var(--container-bg);
             width: 100%;
-            height: 60vh;
-            max-height: 60vh;
+            height: 80vh;
+            max-height: 80vh;
             box-sizing: border-box;
             margin: 0 auto;
         }
@@ -61,11 +63,11 @@
 
         .controls button,
         .controls select {
-            padding: 8px 12px;
+            padding: 1vh 1.5vw;
             margin: 5px;
             border-radius: 4px;
             border: 1px solid var(--button-border);
-            font-size: 1rem;
+            font-size: calc(0.9rem + 0.4vw);
             background-color: var(--button-bg);
             color: var(--button-text);
         }
@@ -77,7 +79,7 @@
             transform: translateX(-50%);
             width: 2px;
             height: 100%;
-            background-color: red;
+            background-color: var(--line-color);
             display: none; /* Initially hidden */
         }
 
@@ -86,8 +88,8 @@
                 padding: 10px;
             }
             #container {
-                height: 40vh;
-                max-height: 40vh;
+                height: 60vh;
+                max-height: 60vh;
             }
             .controls {
                 display: flex;

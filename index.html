@@ -14,7 +14,7 @@
             --button-bg: #fff;
             --button-text: #000;
             --button-border: #ccc;
-            --line-color: #888;
+            --line-color: #fff;
         }
 
         body {
@@ -33,7 +33,7 @@
             --button-bg: #333;
             --button-text: #eee;
             --button-border: #444;
-            --line-color: #555;
+            --line-color: #fff;
         }
 
         #container {
@@ -80,6 +80,8 @@
             width: 2px;
             height: 100%;
             background-color: var(--line-color);
+            mix-blend-mode: difference;
+            pointer-events: none;
             display: none; /* Initially hidden */
         }
 

@@ -143,9 +143,18 @@
     const maxRecordingTime = 30 * 1000; // 30 seconds in milliseconds
 
     function resizeContainer() {
-        const paddingTop = parseInt(getComputedStyle(document.body).paddingTop);
-        const paddingBottom = parseInt(getComputedStyle(document.body).paddingBottom);
-        const available = window.innerHeight - controls.offsetHeight - paddingTop - paddingBottom;
+        const bodyStyles = getComputedStyle(document.body);
+        const paddingTop = parseInt(bodyStyles.paddingTop);
+        const paddingBottom = parseInt(bodyStyles.paddingBottom);
+
+        const controlStyles = getComputedStyle(controls);
+        const controlMargins =
+            parseInt(controlStyles.marginTop) + parseInt(controlStyles.marginBottom);
+
+        const available = window.innerHeight -
+            (controls.offsetHeight + controlMargins) -
+            paddingTop - paddingBottom;
+
         container.style.height = available + 'px';
     }
 
